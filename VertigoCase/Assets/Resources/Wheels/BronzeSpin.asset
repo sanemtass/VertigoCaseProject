@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03aa0ec4b578d40528127a64430fd86b, type: 3}
+  m_Name: BronzeSpin
+  m_EditorClassIdentifier: 
+  wheelSprite: {fileID: 21300000, guid: 8341d81e8119d40a38ade54e37ad808a, type: 3}
+  rotationDuration: 4
+  minNumberOfRotations: 4
+  maxNumberOfRotations: 8
+  sliceItems:
+  - {fileID: 11400000, guid: d2bccba6ec9e0498faf511d29241d4c5, type: 2}
+  - {fileID: 11400000, guid: 2db603699724d4f159cc708e409ccf84, type: 2}
+  - {fileID: 11400000, guid: 291ba4491c6c74f088f0a9cfdb44424e, type: 2}
+  - {fileID: 11400000, guid: aa9dd9828fa6b4fbdaf18379fef33dab, type: 2}
+  - {fileID: 11400000, guid: c2959114836b8449f9c7e9ea2d4df347, type: 2}
+  - {fileID: 11400000, guid: cb09e3518a50142ab8e2f84fcaf05bd5, type: 2}
+  - {fileID: 11400000, guid: f90c3c0b660d9434fb685093eaa25475, type: 2}
+  - {fileID: 11400000, guid: 448d65e0c33cd4e039ac480b7c01179c, type: 2}
+  - {fileID: 11400000, guid: d7441000bfd5f40b2b0c4be136f98f81, type: 2}
+  - {fileID: 11400000, guid: 1628477edf5f643a9a9ae8fe1e3c06a5, type: 2}
+  - {fileID: 11400000, guid: 6b61c2ef6f1cd4adcb03abe0c7edd044, type: 2}
+  - {fileID: 11400000, guid: bf55f1fe7f4da4f85b9f78164405f188, type: 2}
+  - {fileID: 11400000, guid: 7b3319d1bf0c544fbbcaf48350e1bf99, type: 2}
+  - {fileID: 11400000, guid: 944a5f8f612ed4842a336638532f2885, type: 2}
+  - {fileID: 11400000, guid: fcc253eb1975f4daa8dd3cfa07bd082e, type: 2}
+  - {fileID: 11400000, guid: 944d3fb819a704c9988f6f540f854f1b, type: 2}
+  wheelType: 1

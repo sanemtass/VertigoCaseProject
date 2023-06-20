@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eb77c15dde179495fa57d7ba487ad944, type: 3}
+  m_Name: HelmetPumpkinItem
+  m_EditorClassIdentifier: 
+  itemName: 
+  itemIcon: {fileID: 21300000, guid: db9ba98e6f7eb48c8a55d03e8929ddd9, type: 3}
+  itemPrefab: {fileID: 6630194181080014549, guid: f9e415c976b7b4f7ea459a94c3711417,
+    type: 3}
+  itemType: 7
+  itemQuantity: 1
+  quantityTextObjectName: Text (TMP)
