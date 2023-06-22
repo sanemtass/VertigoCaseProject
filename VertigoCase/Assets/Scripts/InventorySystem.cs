@@ -11,18 +11,29 @@ public class InventorySystem : MonoBehaviour
     // Olayı tanımlama
     public Action<SliceItemSO> OnItemAdded;
 
-    public InventorySystem()
+    void Awake()
     {
-        if (Instance != null)
+        if (Instance == null)
         {
-            Debug.LogError("More than one instance of Inventory System!");
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-        Instance = this;
+        else
+        {
+            if (Instance != this)
+            {
+                // If a different instance is already assigned, destroy this one
+                Destroy(gameObject);
+            }
+        }
     }
 
     public IEnumerator AddItem(SliceItemSO item)
     {
-        items.Add(item);
+        if (item.itemType != ItemType.GrenadeItems)
+        {
+            items.Add(item);
+        }
 
         // Olayı tetikle
         OnItemAdded?.Invoke(item);
@@ -34,4 +45,8 @@ public class InventorySystem : MonoBehaviour
         UIPanelController.Instance.SlidePanel();
     }
 
+    public void ResetInventory()
+    {
+        items.Clear();
+    }
 }

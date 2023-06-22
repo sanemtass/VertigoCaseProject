@@ -1,6 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 
 namespace WheelGame
@@ -8,7 +7,25 @@ namespace WheelGame
     public class IndicatorController : MonoBehaviour
     {
         [SerializeField]
-        private Transform _indicator; // indikatör objesine dair referans
+        private Transform _indicator;
+
+        public Image indicatorImage; // Image component of the indicator
+        public Sprite silverSprite; // Silver indicator sprite
+        public Sprite bronzeSprite; // Bronze indicator sprite
+
+        public void ChangeIndicator(WheelType wheelType)
+        {
+            // Change the sprite based on the wheel type
+            switch (wheelType)
+            {
+                case WheelType.SilverWheel:
+                    indicatorImage.sprite = silverSprite;
+                    break;
+                case WheelType.BronzeWheel:
+                    indicatorImage.sprite = bronzeSprite;
+                    break;
+            }
+        }
 
         public void MoveIndicator()
         {

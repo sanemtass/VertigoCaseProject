@@ -2,6 +2,7 @@ using UnityEngine;
 using DG.Tweening;
 using UnityEngine.UI;
 using System.Collections;
+using TMPro;
 
 public class InventoryUIController : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class InventoryUIController : MonoBehaviour
 
     public Image[] inventorySlots; // Envanter slotları için Image UI elementlerini içerir
     public Image centerScreenItemDisplay;
+    public TextMeshProUGUI[] inventoryQuantity;
 
     private void Awake()
     {
@@ -90,10 +92,52 @@ public class InventoryUIController : MonoBehaviour
 
     private void AddItemToInventory(SliceItemSO sliceItem, Image itemCopyImage)
     {
-        Image firstEmptySlot = GetFirstEmptyInventorySlot();
-        if (firstEmptySlot != null)
+        int existingItemIndex = GetExistingItemSlotIndex(sliceItem.itemIcon);
+
+        if (existingItemIndex != -1)
         {
-            firstEmptySlot.sprite = itemCopyImage.sprite; // Kazanılan item'ın görselini bu slota ekle
+            // If the item already exists in the inventory, just increase the quantity
+            int currentQuantity = int.Parse(inventoryQuantity[existingItemIndex].text);
+            inventoryQuantity[existingItemIndex].text = "" + (currentQuantity + sliceItem.itemQuantity);
+          
+        }
+        else
+        {
+            int firstEmptySlotIndex = GetFirstEmptyInventorySlotIndex();
+
+            if (firstEmptySlotIndex != -1)
+            {
+                // If the item doesn't exist in the inventory and there is an empty slot, add the item to the inventory
+                inventorySlots[firstEmptySlotIndex].sprite = itemCopyImage.sprite;
+                inventoryQuantity[firstEmptySlotIndex].text = "" + sliceItem.itemQuantity;
+                
+            }
         }
     }
+
+    private int GetExistingItemSlotIndex(Sprite itemIcon)
+    {
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            if (inventorySlots[i].sprite == itemIcon)
+            {
+                return i;
+            }
+        }
+        return -1; // Item does not exist in the inventory
+    }
+
+    private int GetFirstEmptyInventorySlotIndex()
+    {
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            if (inventorySlots[i].sprite == null)
+            {
+                return i;
+            }
+        }
+        return -1; // No empty slots found
+    }
+
+
 }

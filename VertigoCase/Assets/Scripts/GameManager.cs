@@ -6,9 +6,10 @@ using WheelGame;
 public class GameManager : MonoBehaviour
 {
     public WheelController wheelController;
+    public IndicatorController indicatorController;
     public WheelSO silverWheel;
     public WheelSO bronzeWheel;
-    private int currentZone;
+    private int currentZone = 0;
 
     private void Start()
     {
@@ -27,15 +28,17 @@ public class GameManager : MonoBehaviour
         currentZone++;
 
         // Çarkın görünümünü değiştiriyoruz
-        if (currentZone % 5 == 0)
+        if ((currentZone + 1 == 1) || ((currentZone + 1) % 5 == 0))
         {
-            // Current zone is a multiple of 5, show silver wheel
+            // Current zone is 1 or a multiple of 5, show silver wheel
             wheelController.ChangeWheel(silverWheel);
+            indicatorController.ChangeIndicator(WheelType.SilverWheel);
         }
         else
         {
-            // Current zone is not a multiple of 5, show bronze wheel
+            // Current zone is not 1 and not a multiple of 5, show bronze wheel
             wheelController.ChangeWheel(bronzeWheel);
+            indicatorController.ChangeIndicator(WheelType.BronzeWheel);
         }
     }
 }

@@ -17,13 +17,19 @@ public enum ItemType
 [CreateAssetMenu(fileName = "Item", menuName = "WheelGame/Item", order = 1)]
 public class SliceItemSO : ScriptableObject
 {
-    public string itemName;
+    public string baseItemName; // Base item name like "Glasses"
     public Sprite itemIcon;
-    public GameObject itemPrefab; // Bu dilimin içerdiği objenin prefab'ı
+    public GameObject itemPrefab;
     public ItemType itemType;
     public int itemQuantity;
     public string quantityTextObjectName;
-    //public int index;
-    // Daha fazla özellikler buraya eklenebilir.
+
+    public string ItemName
+    {
+        get
+        {
+            return $"Up To x{itemQuantity} {baseItemName}";
+        }
+    }
 }
 

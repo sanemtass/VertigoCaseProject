@@ -11,7 +11,7 @@ namespace WheelGame
     {
         public WheelSO wheel;
         public IndicatorController indicatorController; // Indicatörün referansını ekliyoruz.
-        
+
         public Image wheelImage;
         // Olayı tanımlama
         public Action OnWheelRotationStarted;
@@ -49,7 +49,7 @@ namespace WheelGame
 
             // Add animation
             // Set initial position
-            RectTransform rectTransform = GetComponent<RectTransform>();
+            RectTransform rectTransform = transform.parent.GetComponent<RectTransform>(); // Parent of Wheel and Indicator
             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, -300f);
 
             // Animate position to the original
@@ -59,56 +59,89 @@ namespace WheelGame
         private SliceItemSO[] CreateSlices()
         {
             float radius = 105f;
-            float angleStep = 360f / 8; // 8 dilim olduğunu belirttik.
+            float angleStep = 360f / 8;
             float currentAngle = 90f;
 
-            List<SliceItemSO> sliceItemList = new List<SliceItemSO>(wheel.sliceItems); // Create a copy of sliceItems
-            SliceItemSO[] createdSlices = new SliceItemSO[8]; // An array to hold the created slices
+            List<SliceItemSO> sliceItemList = new List<SliceItemSO>(wheel.sliceItems);
+            SliceItemSO[] createdSlices = new SliceItemSO[8];
 
-            // counters for different item types
-            int goldCashCount = 0;
-            int grenadeCount = 0;
+            Dictionary<ItemType, int> itemMaxCount = new Dictionary<ItemType, int>
+    {
+        {ItemType.GoldItem, 2},
+        {ItemType.CashItem, 2},
+        {ItemType.ChestItems, 2},
+        {ItemType.GrenadeItems, wheel.wheelType == WheelType.SilverWheel ? 0 : 1},
+        {ItemType.HealthShotItems, 2},
+        {ItemType.TierItems, 2},
+        {ItemType.PointItems, 2},
+        {ItemType.OtherItems, 2}
+    };
 
-            for (int i = 0; i < 8; i++) // 8 dilim olduğunu belirttik.
+            Dictionary<ItemType, int> itemTypeCounter = new Dictionary<ItemType, int>
+    {
+        {ItemType.GoldItem, 0},
+        {ItemType.CashItem, 0},
+        {ItemType.ChestItems, 0},
+        {ItemType.GrenadeItems, 0},
+        {ItemType.HealthShotItems, 0},
+        {ItemType.TierItems, 0},
+        {ItemType.PointItems, 0},
+        {ItemType.OtherItems, 0}
+    };
+
+            // Force grenade item for bronze wheel
+            if (wheel.wheelType == WheelType.BronzeWheel)
+            {
+                SliceItemSO grenadeSlice = sliceItemList.Find(item => item.itemType == ItemType.GrenadeItems);
+                if (grenadeSlice != null)
+                {
+                    CreateSlice(grenadeSlice, currentAngle, radius);
+                    currentAngle += angleStep;
+                    itemTypeCounter[ItemType.GrenadeItems]++;
+                    sliceItemList.Remove(grenadeSlice);
+                    createdSlices[0] = grenadeSlice;
+                }
+                else
+                {
+                    Debug.LogError("Grenade item not found for Bronze Wheel");
+                    return createdSlices;
+                }
+            }
+
+            for (int i = itemTypeCounter[ItemType.GrenadeItems]; i < 8; i++)
             {
                 SliceItemSO sliceItem;
                 int randomIndex;
 
                 do
                 {
-                    randomIndex = UnityEngine.Random.Range(0, sliceItemList.Count); // rastgele bir index seçeriz
+                    if (sliceItemList.Count == 0)
+                    {
+                        Debug.LogError("Not enough slice items available for this wheel type.");
+                        return createdSlices;
+                    }
+
+                    randomIndex = UnityEngine.Random.Range(0, sliceItemList.Count);
                     sliceItem = sliceItemList[randomIndex];
-                    // Control for WheelType and ItemType
-                    if (wheel.wheelType == WheelType.SilverWheel && (sliceItem.itemType == ItemType.CashItem || sliceItem.itemType == ItemType.GoldItem))
-                    {
-                        if (goldCashCount >= 2)
-                            sliceItemList.RemoveAt(randomIndex);
-                        else
-                            goldCashCount++;
-                    }
-                    else if (wheel.wheelType == WheelType.BronzeWheel && sliceItem.itemType == ItemType.GrenadeItems)
-                    {
-                        if (grenadeCount >= 1)
-                            sliceItemList.RemoveAt(randomIndex);
-                        else
-                            grenadeCount++;
-                    }
-                } while (sliceItemList.Count > 0 && !(goldCashCount >= 2 || grenadeCount >= 1));
 
-
-                if (sliceItemList.Count == 0)
-                {
-                    Debug.LogError("Not enough slice items available for this wheel type.");
-                    break;
-                }
+                    if (itemTypeCounter[sliceItem.itemType] < itemMaxCount[sliceItem.itemType])
+                    {
+                        itemTypeCounter[sliceItem.itemType]++;
+                        break;
+                    }
+                    else
+                    {
+                        sliceItemList.RemoveAt(randomIndex);
+                    }
+                } while (true);
 
                 CreateSlice(sliceItem, currentAngle, radius);
                 currentAngle += angleStep;
 
-                createdSlices[i] = sliceItem; // Store the created slice
+                createdSlices[i] = sliceItem;
             }
 
-            return createdSlices; // Return the created slices
+            return createdSlices;
         }
 
         private void CreateSlice(SliceItemSO sliceItem, float currentAngle, float radius)
@@ -157,38 +190,45 @@ namespace WheelGame
 
         public void RotateWheel()
         {
-            if (isRotating) // Çark zaten dönerken yeni bir döndürme işlemi başlatmamalıyız
+            if (isRotating)
                 return;
 
-            // Sağa doğru döndürmek için -360 kullanılıyor
-            // Toplamda dönecek derece sayısı rastgele belirleniyor
             int numberOfRotations = UnityEngine.Random.Range(wheel.minNumberOfRotations, wheel.maxNumberOfRotations);
-            int sliceToStopOn = UnityEngine.Random.Range(0, sliceItems.Length); // Choose a random slice to stop on
-            float totalDegreesToRotate = -360f * numberOfRotations - (360f / 8) * sliceToStopOn; // Use 8 instead of sliceItems.Length
+            int sliceToStopOn = UnityEngine.Random.Range(0, sliceItems.Length);
+            float totalDegreesToRotate = -360f * numberOfRotations - (360f / 8) * sliceToStopOn;
 
-            Debug.Log("Stopping on slice: " + sliceToStopOn); // log the slice number we are stopping on
+            Debug.Log("Stopping on slice: " + sliceToStopOn);
 
-            // Çarkın hızla başlaması ve yavaşça durması için OutCubic kullanılıyor
             transform.DORotate(new Vector3(0, 0, totalDegreesToRotate), wheel.rotationDuration, RotateMode.FastBeyond360)
                 .SetEase(Ease.OutCubic)
                 .SetUpdate(true)
                 .OnStart(() =>
                 {
-                    // Dönüş başladığında indicatörün hareketini başlatıyoruz.
                     indicatorController.MoveIndicator();
-                    // Olayı tetikle
                     OnWheelRotationStarted?.Invoke();
-                    isRotating = true; // Döndürme işlemi başladığında isRotating'i true yap
+                    isRotating = true;
                 })
                 .OnComplete(() =>
                 {
-                    // Dönüş tamamlandığında indicatörün hareketini durduruyoruz.
                     indicatorController.ResetIndicator();
 
-                    StartCoroutine(InventorySystem.Instance.AddItem(sliceItems[sliceToStopOn]));
+            // Check the item type before showing itemDescription and adding it to the inventory
+            if (sliceItems[sliceToStopOn].itemType != ItemType.GrenadeItems)
+                    {
+                        string itemDescription = "Up to x" + sliceItems[sliceToStopOn].itemQuantity + " " + sliceItems[sliceToStopOn].baseItemName;
+                        UIManager.Instance.ShowGainedItemText(itemDescription);
+
+                        StartCoroutine(InventorySystem.Instance.AddItem(sliceItems[sliceToStopOn]));
+                    }
+
+            // If the slice is a grenade, show the grenade panel
+            if (sliceItems[sliceToStopOn].itemType == ItemType.GrenadeItems)
+                    {
+                        UIManager.Instance.ShowBombPanel();
+                    }
+
                     isRotating = false;
                 });
         }
-
     }
 }

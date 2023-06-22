@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb77c15dde179495fa57d7ba487ad944, type: 3}
   m_Name: ArmorPointsItem
   m_EditorClassIdentifier: 
-  itemName: 
+  baseItemName: Armor Points
   itemIcon: {fileID: 21300000, guid: 6f4a24dc9882848629a2ccf8ccafb066, type: 3}
   itemPrefab: {fileID: 4481951881128928308, guid: 8ecc6e20f83a04facac76764d7bc87d2,
     type: 3}
