@@ -16,7 +16,6 @@ public class PlayerData : MonoBehaviour
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
-            // Set initial cash and gold amounts
             Cash = 200;
             Gold = 200;
         }
@@ -24,7 +23,6 @@ public class PlayerData : MonoBehaviour
         {
             if (Instance != this)
             {
-                // If a different instance is already assigned, destroy this one
                 Destroy(gameObject);
             }
         }

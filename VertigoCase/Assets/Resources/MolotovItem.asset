@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb77c15dde179495fa57d7ba487ad944, type: 3}
   m_Name: MolotovItem
   m_EditorClassIdentifier: 
-  baseItemName: Molotov
-  itemIcon: {fileID: 21300000, guid: fa275f9f244224d87a18f930538c0984, type: 3}
-  itemPrefab: {fileID: 853238737291319755, guid: 604d1bd8df4c4488fabdce0887fbdb10,
+  baseItemName_value: Molotov
+  itemIcon_value: {fileID: 21300000, guid: fa275f9f244224d87a18f930538c0984, type: 3}
+  itemPrefab_value: {fileID: 853238737291319755, guid: 604d1bd8df4c4488fabdce0887fbdb10,
     type: 3}
   itemType: 7
-  itemQuantity: 1
-  quantityTextObjectName: Text (TMP)
+  itemQuantity_value: 1
+  quantityTextObjectName_value: Text (TMP)

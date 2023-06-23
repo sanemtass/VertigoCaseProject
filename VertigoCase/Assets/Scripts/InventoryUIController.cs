@@ -8,9 +8,9 @@ public class InventoryUIController : MonoBehaviour
 {
     public static InventoryUIController Instance { get; private set; }
 
-    public Image[] inventorySlots; // Envanter slotları için Image UI elementlerini içerir
+    public Image[] inventorySlots; //It includes Image UI elements for inventory slots.
     public Image centerScreenItemDisplay;
-    public TextMeshProUGUI[] inventoryQuantity;
+    public TextMeshProUGUI[] inventoryQuantity_value;
 
     private void Awake()
     {
@@ -24,53 +24,51 @@ public class InventoryUIController : MonoBehaviour
     private void Update()
     {
         HideEmptySlots();
-        //HideCenterScreenItem();
     }
 
     private void HideEmptySlots()
     {
         foreach (var slot in inventorySlots)
         {
-            if (slot.sprite == null) // Eğer bu slot boşsa
+            if (slot.sprite == null)
             {
-                slot.color = new Color(1, 1, 1, 0); // Image'i görünmez yap
+                slot.color = new Color(1, 1, 1, 0);
             }
             else
             {
-                slot.color = new Color(1, 1, 1, 1); // Image'i görünür yap
+                slot.color = new Color(1, 1, 1, 1);
             }
         }
     }
 
     public IEnumerator ShowItemInInventory(SliceItemSO sliceItem)
     {
-        yield return StartCoroutine(AddItemToInventoryAfterDelay(sliceItem, 2f)); // 2 saniye bekledikten sonra kazanılan item'ı envanter paneline ekler
+        yield return StartCoroutine(AddItemToInventoryAfterDelay(sliceItem, 2f));
     }
 
     private IEnumerator AddItemToInventoryAfterDelay(SliceItemSO sliceItem, float delay)
     {
         yield return new WaitForSeconds(delay);
 
-        // Create a copy of the item
+        //Create a copy of the item
         GameObject itemCopy = new GameObject("ItemCopy");
         Image itemCopyImage = itemCopy.AddComponent<Image>();
-        itemCopyImage.sprite = sliceItem.itemIcon;
+        itemCopyImage.sprite = sliceItem.itemIcon_value;
 
-        // Start the animation sequence
+        //Start the animation sequence
         RectTransform itemRectTransform = itemCopy.GetComponent<RectTransform>();
-        itemRectTransform.SetParent(centerScreenItemDisplay.transform.parent); // Set the parent to the same parent as the centerScreenItemDisplay
-        itemRectTransform.position = centerScreenItemDisplay.transform.position; // Start the animation at the center of the screen
-        itemRectTransform.localScale = Vector3.zero; // Start with the item scaled to 0
+        itemRectTransform.SetParent(centerScreenItemDisplay.transform.parent);
+        itemRectTransform.position = centerScreenItemDisplay.transform.position;
+        itemRectTransform.localScale = Vector3.zero;
 
-        // Scale up the item, add rotation and glow, then scale it down, then move it to the inventory panel
         Sequence sequence = DOTween.Sequence();
-        sequence.Append(itemRectTransform.DOScale(1, 0.5f).SetEase(Ease.OutBack)) // Scale up the item
+        sequence.Append(itemRectTransform.DOScale(1, 0.5f).SetEase(Ease.OutBack))
             .Join(itemRectTransform.DORotate(new Vector3(0, 0, 360), 0.5f, RotateMode.FastBeyond360))
-            .Append(itemRectTransform.DOScale(0, 0.5f).SetEase(Ease.InBack)) // Scale down the item
+            .Append(itemRectTransform.DOScale(0, 0.5f).SetEase(Ease.InBack))
             .Join(itemRectTransform.DORotate(new Vector3(0, 0, 360), 0.5f, RotateMode.FastBeyond360))
-            .Append(itemRectTransform.DOMove(GetFirstEmptyInventorySlot().transform.position, 1f)) // Move the item to the inventory panel
+            .Append(itemRectTransform.DOMove(GetFirstEmptyInventorySlot().transform.position, 1f))
             .OnComplete(() => {
-                // After the animation is complete, add the item to the inventory
+                
                 AddItemToInventory(sliceItem, itemCopyImage);
                 Destroy(itemCopy);
             });
@@ -82,24 +80,22 @@ public class InventoryUIController : MonoBehaviour
     {
         foreach (var slot in inventorySlots)
         {
-            if (slot.sprite == null) // Eğer bu slot boşsa
+            if (slot.sprite == null)
             {
                 return slot;
             }
         }
-        return null; // No empty slots found
+        return null;
     }
 
     private void AddItemToInventory(SliceItemSO sliceItem, Image itemCopyImage)
     {
-        int existingItemIndex = GetExistingItemSlotIndex(sliceItem.itemIcon);
+        int existingItemIndex = GetExistingItemSlotIndex(sliceItem.itemIcon_value);
 
         if (existingItemIndex != -1)
         {
-            // If the item already exists in the inventory, just increase the quantity
-            int currentQuantity = int.Parse(inventoryQuantity[existingItemIndex].text);
-            inventoryQuantity[existingItemIndex].text = "" + (currentQuantity + sliceItem.itemQuantity);
-          
+            int currentQuantity = int.Parse(inventoryQuantity_value[existingItemIndex].text);
+            inventoryQuantity_value[existingItemIndex].text = "" + (currentQuantity + sliceItem.itemQuantity_value);
         }
         else
         {
@@ -107,10 +103,9 @@ public class InventoryUIController : MonoBehaviour
 
             if (firstEmptySlotIndex != -1)
             {
-                // If the item doesn't exist in the inventory and there is an empty slot, add the item to the inventory
                 inventorySlots[firstEmptySlotIndex].sprite = itemCopyImage.sprite;
-                inventoryQuantity[firstEmptySlotIndex].text = "" + sliceItem.itemQuantity;
-                
+                inventorySlots[firstEmptySlotIndex].preserveAspect = true; // Preserve Aspect is set to true
+                inventoryQuantity_value[firstEmptySlotIndex].text = "" + sliceItem.itemQuantity_value;
             }
         }
     }
@@ -124,7 +119,7 @@ public class InventoryUIController : MonoBehaviour
                 return i;
             }
         }
-        return -1; // Item does not exist in the inventory
+        return -1;
     }
 
     private int GetFirstEmptyInventorySlotIndex()
@@ -136,7 +131,7 @@ public class InventoryUIController : MonoBehaviour
                 return i;
             }
         }
-        return -1; // No empty slots found
+        return -1;
     }
 
 

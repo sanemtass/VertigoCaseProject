@@ -12,9 +12,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03aa0ec4b578d40528127a64430fd86b, type: 3}
   m_Name: GoldSpin
   m_EditorClassIdentifier: 
-  wheelSprite: {fileID: 21300000, guid: 71ec5db73564a4e9ba70e8cc745c1cb2, type: 3}
-  rotationDuration: 4
-  minNumberOfRotations: 4
-  maxNumberOfRotations: 8
-  sliceItems: []
+  wheelSprite_value: {fileID: 21300000, guid: 71ec5db73564a4e9ba70e8cc745c1cb2, type: 3}
+  rotationDuration_value: 4
+  minNumberOfRotations_value: 4
+  maxNumberOfRotations_value: 8
+  sliceItems_value:
+  - {fileID: 11400000, guid: a4734b0e8006b4a4e9e2aef078431994, type: 2}
+  - {fileID: 11400000, guid: 8b77890cd42004564836f0793b96cd31, type: 2}
+  - {fileID: 11400000, guid: cb09e3518a50142ab8e2f84fcaf05bd5, type: 2}
+  - {fileID: 11400000, guid: 096fdf66d5ec04564a02b254188644a7, type: 2}
+  - {fileID: 11400000, guid: c2959114836b8449f9c7e9ea2d4df347, type: 2}
+  - {fileID: 11400000, guid: c92e2b559e1dd4ea1b9cb5211f711293, type: 2}
+  - {fileID: 11400000, guid: fd776e210002e46908fa7584fa5deba0, type: 2}
+  - {fileID: 11400000, guid: 02d965e5b79ed4547a7fa9efccf3f767, type: 2}
+  - {fileID: 11400000, guid: fcc253eb1975f4daa8dd3cfa07bd082e, type: 2}
+  - {fileID: 11400000, guid: 944d3fb819a704c9988f6f540f854f1b, type: 2}
+  - {fileID: 11400000, guid: aa9dd9828fa6b4fbdaf18379fef33dab, type: 2}
+  - {fileID: 11400000, guid: d2bccba6ec9e0498faf511d29241d4c5, type: 2}
+  - {fileID: 11400000, guid: 291ba4491c6c74f088f0a9cfdb44424e, type: 2}
+  - {fileID: 11400000, guid: 8fdc41096fb2245df9a995558fe1d60a, type: 2}
   wheelType: 2

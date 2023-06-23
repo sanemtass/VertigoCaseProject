@@ -7,8 +7,6 @@ public class InventorySystem : MonoBehaviour
 {
     public List<SliceItemSO> items = new List<SliceItemSO>();
     public static InventorySystem Instance { get; private set; }
-
-    // Olayı tanımlama
     public Action<SliceItemSO> OnItemAdded;
 
     void Awake()
@@ -22,7 +20,6 @@ public class InventorySystem : MonoBehaviour
         {
             if (Instance != this)
             {
-                // If a different instance is already assigned, destroy this one
                 Destroy(gameObject);
             }
         }
@@ -35,13 +32,11 @@ public class InventorySystem : MonoBehaviour
             items.Add(item);
         }
 
-        // Olayı tetikle
         OnItemAdded?.Invoke(item);
 
-        // Item'ı ekranın ortasında göster
+        //Display the item in the center of the screen.
         yield return StartCoroutine(InventoryUIController.Instance.ShowItemInInventory(item));
 
-        // Burada paneli kaydır
         UIPanelController.Instance.SlidePanel();
     }
 

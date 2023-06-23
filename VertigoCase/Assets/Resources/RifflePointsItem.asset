@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb77c15dde179495fa57d7ba487ad944, type: 3}
   m_Name: RifflePointsItem
   m_EditorClassIdentifier: 
-  baseItemName: Riffle Points
-  itemIcon: {fileID: 21300000, guid: edf0a33c31f574e94913d0fc7e65edec, type: 3}
-  itemPrefab: {fileID: 7787485217320732559, guid: 3d969e10985b9464290bc90fb5262634,
+  baseItemName_value: 
+  itemIcon_value: {fileID: 21300000, guid: edf0a33c31f574e94913d0fc7e65edec, type: 3}
+  itemPrefab_value: {fileID: 7787485217320732559, guid: 3d969e10985b9464290bc90fb5262634,
     type: 3}
   itemType: 6
-  itemQuantity: 1
-  quantityTextObjectName: Text (TMP)
+  itemQuantity_value: 1
+  quantityTextObjectName_value: Text (TMP)

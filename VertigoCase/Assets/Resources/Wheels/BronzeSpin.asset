@@ -12,29 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03aa0ec4b578d40528127a64430fd86b, type: 3}
   m_Name: BronzeSpin
   m_EditorClassIdentifier: 
-  wheelSprite: {fileID: 21300000, guid: 8341d81e8119d40a38ade54e37ad808a, type: 3}
-  rotationDuration: 4
-  minNumberOfRotations: 4
-  maxNumberOfRotations: 8
-  sliceItems:
-  - {fileID: 11400000, guid: d2bccba6ec9e0498faf511d29241d4c5, type: 2}
-  - {fileID: 11400000, guid: 2db603699724d4f159cc708e409ccf84, type: 2}
-  - {fileID: 11400000, guid: 291ba4491c6c74f088f0a9cfdb44424e, type: 2}
-  - {fileID: 11400000, guid: aa9dd9828fa6b4fbdaf18379fef33dab, type: 2}
+  wheelSprite_value: {fileID: 21300000, guid: 8341d81e8119d40a38ade54e37ad808a, type: 3}
+  rotationDuration_value: 4
+  minNumberOfRotations_value: 4
+  maxNumberOfRotations_value: 8
+  sliceItems_value:
+  - {fileID: 11400000, guid: 1628477edf5f643a9a9ae8fe1e3c06a5, type: 2}
+  - {fileID: 11400000, guid: f8fffc369398f4dd3b767a988c75453a, type: 2}
+  - {fileID: 11400000, guid: 096fdf66d5ec04564a02b254188644a7, type: 2}
   - {fileID: 11400000, guid: c2959114836b8449f9c7e9ea2d4df347, type: 2}
+  - {fileID: 11400000, guid: 8b77890cd42004564836f0793b96cd31, type: 2}
   - {fileID: 11400000, guid: cb09e3518a50142ab8e2f84fcaf05bd5, type: 2}
   - {fileID: 11400000, guid: f90c3c0b660d9434fb685093eaa25475, type: 2}
-  - {fileID: 11400000, guid: 448d65e0c33cd4e039ac480b7c01179c, type: 2}
-  - {fileID: 11400000, guid: d7441000bfd5f40b2b0c4be136f98f81, type: 2}
-  - {fileID: 11400000, guid: 1628477edf5f643a9a9ae8fe1e3c06a5, type: 2}
-  - {fileID: 11400000, guid: 6b61c2ef6f1cd4adcb03abe0c7edd044, type: 2}
   - {fileID: 11400000, guid: bf55f1fe7f4da4f85b9f78164405f188, type: 2}
-  - {fileID: 11400000, guid: 7b3319d1bf0c544fbbcaf48350e1bf99, type: 2}
-  - {fileID: 11400000, guid: 944a5f8f612ed4842a336638532f2885, type: 2}
+  - {fileID: 11400000, guid: 2db603699724d4f159cc708e409ccf84, type: 2}
   - {fileID: 11400000, guid: fcc253eb1975f4daa8dd3cfa07bd082e, type: 2}
-  - {fileID: 11400000, guid: 944d3fb819a704c9988f6f540f854f1b, type: 2}
-  - {fileID: 11400000, guid: 096fdf66d5ec04564a02b254188644a7, type: 2}
-  - {fileID: 11400000, guid: 8b77890cd42004564836f0793b96cd31, type: 2}
   - {fileID: 11400000, guid: 5f6a356e977874a7e8f2941973b1dfb3, type: 2}
-  - {fileID: 11400000, guid: 02d965e5b79ed4547a7fa9efccf3f767, type: 2}
+  - {fileID: 11400000, guid: d2bccba6ec9e0498faf511d29241d4c5, type: 2}
+  - {fileID: 11400000, guid: 0c72f71b1126a426eb58ca2a824b203f, type: 2}
+  - {fileID: 11400000, guid: 448d65e0c33cd4e039ac480b7c01179c, type: 2}
+  - {fileID: 11400000, guid: 6b61c2ef6f1cd4adcb03abe0c7edd044, type: 2}
   wheelType: 1

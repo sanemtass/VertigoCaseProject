@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb77c15dde179495fa57d7ba487ad944, type: 3}
   m_Name: CashItem
   m_EditorClassIdentifier: 
-  baseItemName: Cash
-  itemIcon: {fileID: 21300000, guid: 2853809ea5ca94b23af23b57b10dbe63, type: 3}
-  itemPrefab: {fileID: 8985070635539862449, guid: 4023b7813a8ee451eb3f58d2d1d7fb50,
+  baseItemName_value: Cash
+  itemIcon_value: {fileID: 21300000, guid: 2853809ea5ca94b23af23b57b10dbe63, type: 3}
+  itemPrefab_value: {fileID: 8985070635539862449, guid: 4023b7813a8ee451eb3f58d2d1d7fb50,
     type: 3}
   itemType: 1
-  itemQuantity: 25
-  quantityTextObjectName: Text (TMP)
+  itemQuantity_value: 100
+  quantityTextObjectName_value: Text (TMP)

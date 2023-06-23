@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb77c15dde179495fa57d7ba487ad944, type: 3}
   m_Name: Tier2MleItem
   m_EditorClassIdentifier: 
-  baseItemName: Tier2 MLE
-  itemIcon: {fileID: 21300000, guid: 0a6604321486b47d6b1401e9e3683713, type: 3}
-  itemPrefab: {fileID: 3155705307781276989, guid: 781f5314c04d34510bc4330c48eab880,
+  baseItemName_value: Tier2 MLE
+  itemIcon_value: {fileID: 21300000, guid: 0a6604321486b47d6b1401e9e3683713, type: 3}
+  itemPrefab_value: {fileID: 3155705307781276989, guid: 781f5314c04d34510bc4330c48eab880,
     type: 3}
   itemType: 5
-  itemQuantity: 1
-  quantityTextObjectName: Text (TMP)
+  itemQuantity_value: 1
+  quantityTextObjectName_value: Text (TMP)

@@ -5,6 +5,7 @@ using WheelGame;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
@@ -13,15 +14,17 @@ public class UIManager : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private ButtonHandler buttonHandler;
     [SerializeField] private WheelController wheelController;
-    [SerializeField] private IndicatorController indicatorController; // indicatorController'ı ekleyin.
+    [SerializeField] private IndicatorController indicatorController;
     [SerializeField] public TextMeshProUGUI gainedItemText;
 
     [SerializeField] private ButtonHandler giveUpButtonHandler;
     [SerializeField] private ButtonHandler reviveButtonHandler;
+    [SerializeField] private ButtonHandler exitButtonHandler;
+    [SerializeField] private Button exitButton;
 
     public ButtonHandler ButtonHandler { get => buttonHandler; set => buttonHandler = value; }
     public WheelController WheelController { get => wheelController; set => wheelController = value; }
-    public IndicatorController IndicatorController { get => indicatorController; set => indicatorController = value; } // Property'yi ekleyin.
+    public IndicatorController IndicatorController { get => indicatorController; set => indicatorController = value; }
 
     public GameObject bombPanel;
 
@@ -44,55 +47,64 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        // Butonun tıklanma işlemine bir listener ekliyoruz
         ButtonHandler.OnButtonClicked += HandleButtonClick;
         giveUpButtonHandler.OnButtonClicked += GiveUpGame;
         reviveButtonHandler.OnButtonClicked += RevivePlayer;
+        exitButtonHandler.OnButtonClicked += ExitGame;
+    }
+
+    void Update()
+    {
+        if (GameManager.Instance.isSafeZone && !wheelController.isRotating)
+        {
+            exitButton.interactable = true;
+        }
+        else
+        {
+            exitButton.interactable = false;
+        }
     }
 
     private void OnDestroy()
     {
-        // Listener'ı kaldırıyoruz. Bu önemli çünkü listener'ı kaldırmazsak, bu nesne yok edildiğinde hala bir referans olacağı için bellek sızıntısına neden olabilir.
         ButtonHandler.OnButtonClicked -= HandleButtonClick;
         giveUpButtonHandler.OnButtonClicked -= GiveUpGame;
         reviveButtonHandler.OnButtonClicked -= RevivePlayer;
+        exitButtonHandler.OnButtonClicked -= ExitGame;
     }
-
 
     private void HandleButtonClick()
     {
-        // Butona tıklanıldığında çarkı döndür
         WheelController.RotateWheel();
     }
 
     public void ShowGainedItemText(string text)
     {
         gainedItemText.text = text;
-        gainedItemText.gameObject.SetActive(true); // Make sure the text object is active
-                                                   // Animate text
-        gainedItemText.transform.localScale = Vector3.zero; // Start size
-        gainedItemText.transform.DOScale(1f, 0.3f).SetEase(Ease.OutBack) // Animate to normal size
-            .OnComplete(() => StartCoroutine(HideGainedItemTextAfterDelay())); // Start the hiding coroutine when the scaling animation is complete
+        gainedItemText.gameObject.SetActive(true);
+        gainedItemText.transform.localScale = Vector3.zero;
+        gainedItemText.transform.DOScale(1f, 0.3f).SetEase(Ease.OutBack)
+            .OnComplete(() => StartCoroutine(HideGainedItemTextAfterDelay())); //Start the hiding coroutine when the scaling animation is complete
     }
 
     private IEnumerator HideGainedItemTextAfterDelay(float delay = 2f)
     {
         yield return new WaitForSeconds(delay);
         // Hide text
-        gainedItemText.transform.DOScale(0f, 0.3f).SetEase(Ease.InBack) // Animate to zero size
-            .OnComplete(() => gainedItemText.gameObject.SetActive(false)); // Deactivate the text object when the scaling animation is complete
+        gainedItemText.transform.DOScale(0f, 0.3f).SetEase(Ease.InBack)
+            .OnComplete(() => gainedItemText.gameObject.SetActive(false));
     }
 
     public void ShowBombPanel()
     {
-        PauseGame(); // Add this
+        PauseGame();
         bombPanel.SetActive(true);
     }
 
     public void HideBombPanel()
     {
         bombPanel.SetActive(false);
-        UnpauseGame(); // Add this
+        UnpauseGame();
     }
 
     public void GiveUpGame()
@@ -104,32 +116,39 @@ public class UIManager : MonoBehaviour
 
     public void PauseGame()
     {
-        Time.timeScale = 0f; // Stops the game
+        Time.timeScale = 0f;
     }
 
     public void UnpauseGame()
     {
-        Time.timeScale = 1f; // Resumes the game
+        Time.timeScale = 1f;
     }
 
     public void RevivePlayer()
     {
-        const int ReviveCost = 25; // Canlandırma maliyetini belirleyin
+        const int ReviveCost = 25;
 
         if (PlayerData.Instance.Gold >= ReviveCost)
         {
-            // Yeterli altın varsa, canlandırma işlemini gerçekleştirin ve altınları çıkarın
+            //Perform the animation and remove the gold if there is enough gold.
             PlayerData.Instance.RemoveGold(ReviveCost);
             bombPanel.SetActive(false);
         }
         else
         {
-            // Yeterli altın yoksa, bir uyarı mesajı gösterin veya başka bir işlem yapın
             Debug.Log("Not enough gold for revive!");
         }
 
-        WheelController.ChangeWheel(wheelController.wheel); // Refresh the wheel
-        UnpauseGame(); // Unpause the game after the player revives
+        WheelController.ChangeWheel(wheelController.wheel_value); //Refresh the wheel
+        UnpauseGame(); //Unpause the game after the player revives
     }
 
+    public void ExitGame()
+    {
+        if (GameManager.Instance.isSafeZone && !WheelController.isRotating)
+        {
+            InventorySystem.Instance.ResetInventory();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        }
+    }
 }

@@ -14,12 +14,11 @@ namespace WheelGame
     [CreateAssetMenu(fileName = "New Wheel", menuName = "Wheel Game/Wheel")]
     public class WheelSO : ScriptableObject
     {
-        public Sprite wheelSprite;
-        public int rotationDuration;
-        public int minNumberOfRotations;
-        public int maxNumberOfRotations;
-        public SliceItemSO[] sliceItems;
+        public Sprite wheelSprite_value;
+        public int rotationDuration_value;
+        public int minNumberOfRotations_value;
+        public int maxNumberOfRotations_value;
+        public SliceItemSO[] sliceItems_value;
         public WheelType wheelType;
-        // Her çark için diğer özellikler buraya eklenebilir
     }
 }

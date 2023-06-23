@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb77c15dde179495fa57d7ba487ad944, type: 3}
   m_Name: GrenadeM26Item
   m_EditorClassIdentifier: 
-  baseItemName: Grenade M26
-  itemIcon: {fileID: 21300000, guid: 909d65d81f37149bfa53824ca2e92e0d, type: 3}
-  itemPrefab: {fileID: 3736887123687457102, guid: 339035010a93a4b428fc6ae790681ad8,
+  baseItemName_value: Grenade M26
+  itemIcon_value: {fileID: 21300000, guid: 909d65d81f37149bfa53824ca2e92e0d, type: 3}
+  itemPrefab_value: {fileID: 3736887123687457102, guid: 339035010a93a4b428fc6ae790681ad8,
     type: 3}
   itemType: 3
-  itemQuantity: 1
-  quantityTextObjectName: Text (TMP)
+  itemQuantity_value: 1
+  quantityTextObjectName_value: Text (TMP)

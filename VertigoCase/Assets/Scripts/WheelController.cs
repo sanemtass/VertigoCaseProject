@@ -9,51 +9,58 @@ namespace WheelGame
 {
     public class WheelController : MonoBehaviour
     {
-        public WheelSO wheel;
-        public IndicatorController indicatorController; // Indicatörün referansını ekliyoruz.
+        public WheelSO wheel_value;
+        public IndicatorController indicatorController_value;
 
-        public Image wheelImage;
+        public Image wheelImage_value;
         // Olayı tanımlama
         public Action OnWheelRotationStarted;
 
-        private SliceItemSO[] sliceItems; // Tekerlekteki dilimlerin içeriğini belirler
-        private bool isRotating = false;
+        private SliceItemSO[] sliceItems_value; //To determine the content of the slices on the wheel.
+        public bool isRotating = false;
 
         private void Start()
         {
-            // Tekerlekteki dilimleri oluştur
-            ChangeWheel(wheel);
+            //Create the slices on the wheel
+            ChangeWheel(wheel_value);
         }
 
         public void ChangeWheel(WheelSO newWheel)
         {
-            wheel = newWheel;
+            wheel_value = newWheel;
 
-            if (wheelImage == null)
+            if (wheelImage_value == null)
             {
                 Debug.LogError("Wheel image is not set");
                 return;
             }
 
-            // Update the wheel sprite
-            wheelImage.sprite = newWheel.wheelSprite;
+            //Update the wheel sprite
+            wheelImage_value.sprite = newWheel.wheelSprite_value;
 
-            // Clear existing slices
+            //Clear existing slices
             foreach (Transform child in transform)
             {
                 Destroy(child.gameObject);
             }
 
-            // Update sliceItems with the new wheel's sliceItems
-            sliceItems = CreateSlices();
+            //Update sliceItems with the new wheel's sliceItems
+            sliceItems_value = CreateSlices();
 
-            // Add animation
-            // Set initial position
-            RectTransform rectTransform = transform.parent.GetComponent<RectTransform>(); // Parent of Wheel and Indicator
+            RectTransform rectTransform = transform.parent.GetComponent<RectTransform>(); //Parent of Wheel and Indicator
             rectTransform.anchoredPosition = new Vector2(rectTransform.anchoredPosition.x, -300f);
 
-            // Animate position to the original
+            //Animate position to the original
             rectTransform.DOAnchorPosY(0f, 0.5f).SetEase(Ease.OutBack);
+
+            if (newWheel.wheelType == WheelType.SilverWheel || newWheel.wheelType == WheelType.GoldWheel)
+            {
+                GameManager.Instance.isSafeZone = true;
+            }
+            else
+            {
+                GameManager.Instance.isSafeZone = false;
+            }
         }
 
         private SliceItemSO[] CreateSlices()
@@ -62,7 +69,7 @@ namespace WheelGame
             float angleStep = 360f / 8;
             float currentAngle = 90f;
 
-            List<SliceItemSO> sliceItemList = new List<SliceItemSO>(wheel.sliceItems);
+            List<SliceItemSO> sliceItemList = new List<SliceItemSO>(wheel_value.sliceItems_value);
             SliceItemSO[] createdSlices = new SliceItemSO[8];
 
             Dictionary<ItemType, int> itemMaxCount = new Dictionary<ItemType, int>
@@ -70,7 +77,7 @@ namespace WheelGame
         {ItemType.GoldItem, 2},
         {ItemType.CashItem, 2},
         {ItemType.ChestItems, 2},
-        {ItemType.GrenadeItems, wheel.wheelType == WheelType.SilverWheel ? 0 : 1},
+        {ItemType.GrenadeItems, wheel_value.wheelType == WheelType.SilverWheel ? 0 : 1},
         {ItemType.HealthShotItems, 2},
         {ItemType.TierItems, 2},
         {ItemType.PointItems, 2},
@@ -89,8 +96,8 @@ namespace WheelGame
         {ItemType.OtherItems, 0}
     };
 
-            // Force grenade item for bronze wheel
-            if (wheel.wheelType == WheelType.BronzeWheel)
+            //Force grenade item for bronze wheel
+            if (wheel_value.wheelType == WheelType.BronzeWheel)
             {
                 SliceItemSO grenadeSlice = sliceItemList.Find(item => item.itemType == ItemType.GrenadeItems);
                 if (grenadeSlice != null)
@@ -146,32 +153,31 @@ namespace WheelGame
 
         private void CreateSlice(SliceItemSO sliceItem, float currentAngle, float radius)
         {
-            // Dilimin içeriği için yeni bir GameObject oluştur
-            GameObject newSlice = Instantiate(sliceItem.itemPrefab);
+            GameObject newSlice = Instantiate(sliceItem.itemPrefab_value);
             newSlice.transform.SetParent(transform);
 
-            // RectTransform'u kullanarak dilimi çarkın çevresine yerleştir
+            //Place the slice on the circumference of the wheel using RectTransform.
             RectTransform rectTransform = newSlice.GetComponent<RectTransform>();
             rectTransform.anchorMin = new Vector2(0.5f, 0.5f);
             rectTransform.anchorMax = new Vector2(0.5f, 0.5f);
             rectTransform.pivot = new Vector2(0.5f, 0.5f);
             rectTransform.anchoredPosition = Vector2.zero;
 
-            float sliceRotation = 90 - currentAngle; // or any other calculation you find suitable
+            float sliceRotation = 90 - currentAngle;
             newSlice.transform.localRotation = Quaternion.Euler(0f, 0f, -sliceRotation);
 
-            // Dilimin konumunu ayarla
+            //Set the position of the slice.
             float itemXPosition = radius * Mathf.Cos(currentAngle * Mathf.Deg2Rad);
             float itemYPosition = radius * Mathf.Sin(currentAngle * Mathf.Deg2Rad);
             newSlice.transform.localPosition = new Vector3(itemXPosition, itemYPosition, 0);
 
-            Transform quantityTextObject = newSlice.transform.Find(sliceItem.quantityTextObjectName);
+            Transform quantityTextObject = newSlice.transform.Find(sliceItem.quantityTextObjectName_value);
             if (quantityTextObject != null)
             {
                 TextMeshProUGUI textComponent = quantityTextObject.GetComponent<TextMeshProUGUI>();
                 if (textComponent != null)
                 {
-                    textComponent.text = "x" + sliceItem.itemQuantity;
+                    textComponent.text = "x" + sliceItem.itemQuantity_value;
                 }
                 else
                 {
@@ -183,9 +189,6 @@ namespace WheelGame
                 Debug.LogError("No quantityTextObject found in the newSlice prefab");
             }
 
-            //// Get the TMPro component from the prefab and set the text
-            //var textComponent = newSlice.transform.Find(sliceItem.quantityTextObjectName).GetComponent<TMPro.TextMeshPro>();
-            //textComponent.text = "x" + sliceItem.itemQuantity;
         }
 
         public void RotateWheel()
@@ -193,36 +196,35 @@ namespace WheelGame
             if (isRotating)
                 return;
 
-            int numberOfRotations = UnityEngine.Random.Range(wheel.minNumberOfRotations, wheel.maxNumberOfRotations);
-            int sliceToStopOn = UnityEngine.Random.Range(0, sliceItems.Length);
+            int numberOfRotations = UnityEngine.Random.Range(wheel_value.minNumberOfRotations_value, wheel_value.maxNumberOfRotations_value);
+            int sliceToStopOn = UnityEngine.Random.Range(0, sliceItems_value.Length);
             float totalDegreesToRotate = -360f * numberOfRotations - (360f / 8) * sliceToStopOn;
 
             Debug.Log("Stopping on slice: " + sliceToStopOn);
 
-            transform.DORotate(new Vector3(0, 0, totalDegreesToRotate), wheel.rotationDuration, RotateMode.FastBeyond360)
+            transform.DORotate(new Vector3(0, 0, totalDegreesToRotate), wheel_value.rotationDuration_value, RotateMode.FastBeyond360)
                 .SetEase(Ease.OutCubic)
                 .SetUpdate(true)
                 .OnStart(() =>
                 {
-                    indicatorController.MoveIndicator();
+                    indicatorController_value.MoveIndicator();
                     OnWheelRotationStarted?.Invoke();
                     isRotating = true;
                 })
                 .OnComplete(() =>
                 {
-                    indicatorController.ResetIndicator();
+                    indicatorController_value.ResetIndicator();
 
-            // Check the item type before showing itemDescription and adding it to the inventory
-            if (sliceItems[sliceToStopOn].itemType != ItemType.GrenadeItems)
+            if (sliceItems_value[sliceToStopOn].itemType != ItemType.GrenadeItems)
                     {
-                        string itemDescription = "Up to x" + sliceItems[sliceToStopOn].itemQuantity + " " + sliceItems[sliceToStopOn].baseItemName;
+                        string itemDescription = "Up to x" + sliceItems_value[sliceToStopOn].itemQuantity_value + " " + sliceItems_value[sliceToStopOn].baseItemName_value;
                         UIManager.Instance.ShowGainedItemText(itemDescription);
 
-                        StartCoroutine(InventorySystem.Instance.AddItem(sliceItems[sliceToStopOn]));
+                        StartCoroutine(InventorySystem.Instance.AddItem(sliceItems_value[sliceToStopOn]));
                     }
 
-            // If the slice is a grenade, show the grenade panel
-            if (sliceItems[sliceToStopOn].itemType == ItemType.GrenadeItems)
+            //If the slice is a grenade, show the grenade panel
+            if (sliceItems_value[sliceToStopOn].itemType == ItemType.GrenadeItems)
                     {
                         UIManager.Instance.ShowBombPanel();
                     }
